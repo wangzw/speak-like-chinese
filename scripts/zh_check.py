@@ -233,8 +233,21 @@ def find_lone_ellipsis(seg):
     return out
 
 
+def is_dash_placeholder(seg):
+    # 表格单元格里单独一个 — 或 —— 表示“无”，是占位符，不是破折号
+    return seg.source == "表格" and seg.flat.strip() in ("—", "——")
+
+
 def find_single_dash(seg):
+    if is_dash_placeholder(seg):
+        return []
     return [m.span() for m in re.finditer("—+", seg.flat) if len(m.group(0)) % 2 == 1]
+
+
+def find_spaced_dash(seg):
+    if is_dash_placeholder(seg):
+        return []
+    return [m.span() for m in re.finditer("[ \t　]——|——[ \t　]", seg.flat)]
 
 
 QUANT = ("小时|分钟|秒钟|毫秒|星期|季度|公里|千米|公斤|英寸|厘米|毫米|美元|"
@@ -286,7 +299,7 @@ RULES = [
     ("直角引号", flat_rule(r"[「」『』]")),
     ("三点省略号", flat_rule(r"\.{3,}", need_han=True)),
     ("落单的省略号", find_lone_ellipsis),
-    ("带空格的破折号", flat_rule("[ \t\u3000]——|——[ \t\u3000]")),
+    ("带空格的破折号", find_spaced_dash),
     ("单个破折号", find_single_dash),
     ("en dash", flat_rule("–+")),
     ("汉字间的连字符", flat_rule(rf"{H}[ \t]+-[ \t]+{H}|{H}[ \t]*--[ \t]*{H}")),
@@ -658,7 +671,8 @@ BOLD_COUNT = re.compile(r"\*\*(?=[^\s*])[^\n]+?(?<=[^\s*])\*\*")
 
 
 def count_all(segs, thematic):
-    texts = [s.count_text for s in segs]
+    # 表格里单独一个 — 或 —— 是空值占位，不计入任何指标
+    texts = [s.count_text for s in segs if not is_dash_placeholder(s)]
     han = sum(len(HAS_HAN.findall(t)) for t in texts)
 
     def total(pat):
