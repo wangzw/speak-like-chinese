@@ -55,3 +55,7 @@ python3 -I scripts/privacy_check.py 文件.md
 ```
 
 两个脚本只用标准库。`zh_check.py` 跳过代码块、行内代码、链接地址和 HTML 标签，表格按单元格检查，front matter 只查标题和描述；有硬命中时退出码为 1。
+
+## 许可
+
+Apache License 2.0，见 `LICENSE`。
