@@ -1,0 +1,8 @@
+# 随仓库发布的放行名单：经人工确认为公开或通用的文件名、路径、URL，一行一个，精确匹配。
+# 内部名称写在 privacy-denylist.txt（不进仓库），不要写在这里。
+deps_test.go
+dispatch.go
+wiring_test.go
+pkg/foo/AGENTS.md
+.github/actionlint.yaml
+https://mui.com/material-ui/react-card.md

@@ -1,0 +1,2 @@
+===== 14-unclosed-frontmatter.md =====
+错误：front matter 没有闭合。第 1 行以 +++ 开头，直到文件末尾都没有对应的 +++，本文件未做其余检查。

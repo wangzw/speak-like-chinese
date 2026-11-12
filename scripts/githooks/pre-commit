@@ -1,0 +1,13 @@
+#!/bin/sh
+# 提交前对暂存的文本文件做隐私扫描。安装：git config core.hooksPath scripts/githooks
+root=$(git rev-parse --show-toplevel)
+files=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(md|txt|py|sh)$' || true)
+[ -z "$files" ] && exit 0
+cd "$root" || exit 1
+# shellcheck disable=SC2086
+python3 -I scripts/privacy_check.py $files
+status=$?
+if [ $status -ne 0 ]; then
+  echo "隐私扫描有命中，提交已拦下。处理后重新提交，或确认为公开内容后用 git commit --no-verify。" >&2
+fi
+exit $status
