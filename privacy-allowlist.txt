@@ -6,3 +6,4 @@ wiring_test.go
 pkg/foo/AGENTS.md
 .github/actionlint.yaml
 https://mui.com/material-ui/react-card.md
+https://github.com/wangzw/speak-like-chinese.git
