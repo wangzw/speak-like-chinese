@@ -24,8 +24,6 @@ description: 让中文写得像中国人写的。处理两类问题：AI 腔（�
 | `scripts/privacy_check.py` | 隐私扫描 | 例句入库前、提交前 |
 | `scripts/githooks/pre-commit` | 提交前自动跑隐私扫描 | 新克隆后用 core.hooksPath 启用 |
 
-原始审查数据（审查明细.csv、library.json、_data/）留在 `~/.claude/zh-style/`，是一次性生成的，不再更新。
-
 ## 流程
 
 1. 写前：通读 `checklist.md`。
